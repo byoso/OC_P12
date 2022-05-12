@@ -1,0 +1,11 @@
+
+# Debug
+DEBUG = True
+DATABASE_DEBUG = False
+
+# Secret settings
+SECRET_KEY = 'xxx'
+
+# PostgreSQL DATABASE
+DB_USER = 'xxx'
+DB_PASSWORD = 'xxx'
