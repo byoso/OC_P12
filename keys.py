@@ -11,7 +11,7 @@ to modify once the application is already deployed.
 
 # Debug
 DEBUG = True
-DATABASE_DEBUG = False
+DATABASE_DEBUG = True
 
 # Secret settings
 SECRET_KEY = 'django-insecure-o*o+=47zun+2o=q(t*lp++818bef%7*ok^ivkb2!q!144=_u3s'
