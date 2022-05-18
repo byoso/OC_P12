@@ -6,3 +6,6 @@ class Employee(AbstractUser):
 
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Employee"

@@ -1,13 +1,55 @@
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 
-"""Use this script with:
+from tools import color
+
+"""Use this script to create the groups in a new database,
+do it only once :
 $ ./manage.py shell < groups_initialize.py
 
-to create the groups, do it only once in a new database.
+
 """
 
-group_sale = Group(name="sale")
-group_sale.save()
+# Group Sale
+group = Group.objects.filter(name="sale")
+if not group.exists():
+    group_sale = Group.objects.create(name="sale")
+    permissions = [
+        Permission.objects.get(codename="add_client"),
+        Permission.objects.get(codename="change_client"),
+        Permission.objects.get(codename="view_client"),
+        Permission.objects.get(codename="add_contract"),
+        Permission.objects.get(codename="change_contract"),
+        Permission.objects.get(codename="view_contract"),
+        Permission.objects.get(codename="add_event"),
+    ]
 
-group_support = Group(name="support")
-group_support.save()
+    for permission in permissions:
+        group_sale.permissions.add(permission)
+    group_sale.save()
+    print(
+        f"{color['success']} Group 'sale' successfully created."
+        f" {color['end']}"
+        )
+else:
+    print("a 'sale' group already exists")
+
+
+# Group Suppoport
+group = Group.objects.filter(name="support")
+if not group.exists():
+    group_support = Group.objects.create(name="support")
+    permissions = [
+        Permission.objects.get(codename="view_client"),
+        Permission.objects.get(codename="change_event"),
+        Permission.objects.get(codename="view_event"),
+    ]
+
+    for permission in permissions:
+        group_support.permissions.add(permission)
+    group_support.save()
+    print(
+        f"{color['success']} Group 'support' successfully created."
+        f" {color['end']}"
+        )
+else:
+    print("a 'support' group already exists")

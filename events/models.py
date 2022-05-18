@@ -1,6 +1,10 @@
 from django.db import models
 from django.core.validators import RegexValidator
 
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+
+
 phone_validator = RegexValidator(
     "^(0|\+[1-9]{2})[-., ]?[1-9]?([-., ]?[0-9]{2,}){4,}$"
     )
@@ -40,7 +44,7 @@ class EmployeeEvent(Assignment):
 
 
 class Client(TimeStamp):
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=False, verbose_name="is client")
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, null=True, blank=True)
@@ -85,3 +89,12 @@ class Event(TimeStamp):
 
     def __str__(self):
         return f"{self.name}"
+
+
+# content_type = ContentType.objects.get_for_model(Client)
+# # help(Permission.objects.create)
+# test_perm = Permission.objects.create(
+#     codename="test_perm",
+#     name="permission pour tester",
+#     content_type=content_type,
+# )
