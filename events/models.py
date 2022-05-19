@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import RegexValidator
 
+from django.contrib import admin
+from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 
@@ -23,6 +25,7 @@ class Assignment(models.Model):
 class TimeStamp(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    comment = models.TextField(max_length=255, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -44,7 +47,8 @@ class EmployeeEvent(Assignment):
 
 
 class Client(TimeStamp):
-    active = models.BooleanField(default=False, verbose_name="is client")
+    active = models.BooleanField(default=True)
+    is_client = models.BooleanField(default=False, verbose_name="is client")
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, null=True, blank=True)
@@ -72,17 +76,23 @@ class Contract(TimeStamp):
         related_name="contracts")
     signed = models.BooleanField(default=False)
     amount_in_euros = models.FloatField(default=0)
-    payment_date = models.DateTimeField(null=True, blank=True)
+    payment_date = models.DateField(null=True, blank=True)
+    payed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.client} ({self.date_created.date()})"
 
+    @admin.display(description='show client')
+    def link_client(self):
+        link = reverse("admin:events_client_change", args=[self.client.id])
+        return (f'<a href="{link}">show contract</a>')
+
 
 class Event(TimeStamp):
     name = models.CharField(max_length=100)
-    contract = models.OneToOneField(
+    contract = models.ForeignKey(
         Contract, null=True, blank=True, on_delete=models.CASCADE,
-        related_name="event")
+        related_name="events")
     assignee = models.ManyToManyField(
         'authentication.Employee', through=EmployeeEvent,
         related_name="events")
