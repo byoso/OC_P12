@@ -15,10 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 
 
 urlpatterns = [
@@ -26,5 +22,5 @@ urlpatterns = [
     # JWT Authentication:
     path('api/token/', include('authentication.urls')),
     # Events application
-    path('api/events/', include('events.urls')),
+    path('api/', include('events.urls')),
 ]
