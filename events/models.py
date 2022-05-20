@@ -51,7 +51,8 @@ class Client(TimeStamp):
     is_client = models.BooleanField(default=False, verbose_name="is client")
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100, null=True, blank=True)
+    email = models.EmailField(
+        max_length=100, null=True, blank=True)
     phone = models.CharField(
         max_length=16, validators=[phone_validator], null=True, blank=True)
     mobile = models.CharField(
@@ -93,6 +94,7 @@ class Event(TimeStamp):
     contract = models.ForeignKey(
         Contract, null=True, blank=True, on_delete=models.CASCADE,
         related_name="events")
+    date = models.DateField(null=True, blank=True)
     assignee = models.ManyToManyField(
         'authentication.Employee', through=EmployeeEvent,
         related_name="events")

@@ -15,12 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import keys
+
+prefix = ""
+if keys.DATABASE_DEBUG:
+    prefix = keys.DEBUG_DB_PREFIX
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # JWT Authentication:
-    path('api/token/', include('authentication.urls')),
+    path(f'{prefix}api/token/', include('authentication.urls')),
     # Events application
-    path('api/', include('events.urls')),
+    path(f'{prefix}api/', include('events.urls')),
 ]

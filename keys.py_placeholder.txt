@@ -1,7 +1,10 @@
 
 # Debug
-DEBUG = True
-DATABASE_DEBUG = False
+DEBUG = False
+DATABASE_DEBUG = False  # True for sqlite, False for PostgreSQL
+# set a prefix to 'hide' the site on production while operating with the
+# test database.
+DEBUG_DB_PREFIX = "xxx"
 
 # Secret settings
 SECRET_KEY = 'xxx'
