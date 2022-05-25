@@ -15,6 +15,7 @@ phone_validator = RegexValidator(
 
 
 class Assignment(models.Model):
+    """Abstract Model"""
     employee = models.ForeignKey(
         'authentication.Employee', on_delete=models.CASCADE, null=True,
         blank=True, verbose_name="Employee assigned")
@@ -26,6 +27,7 @@ class Assignment(models.Model):
 
 
 class TimeStamp(models.Model):
+    """Abstract Model"""
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     comment = models.TextField(max_length=255, null=True, blank=True)
