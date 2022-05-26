@@ -28,4 +28,6 @@ urlpatterns = [
     path(f'{prefix}api/token/', include('authentication.urls')),
     # Events application
     path(f'{prefix}api/', include('events.urls')),
+    # Managment functionalities
+    path(f'{prefix}api/', include('managment.urls')),
 ]

@@ -53,12 +53,17 @@ $ pip install -r requirements.txt
 
 # Run the Application
 
-### Make and apply the migrations
+### Apply the migrations
 ```
-$ ./manage.py makemigrations
-...
 $ ./manage.py migrate
 ```
+
+### Initialize the work groups (sale, support, managment)
+
+```
+$ ./manage.py shell < groups_initialize.py
+```
+
 ### Run the server
 ```
 $ ./manage.py runserver

@@ -6,7 +6,6 @@ from tools import color
 do it only once :
 $ ./manage.py shell < groups_initialize.py
 
-
 """
 
 # Group Sale
@@ -34,7 +33,7 @@ else:
     print("a 'sale' group already exists")
 
 
-# Group Suppoport
+# Group Support
 group = Group.objects.filter(name="support")
 if not group.exists():
     group_support = Group.objects.create(name="support")
@@ -53,3 +52,16 @@ if not group.exists():
         )
 else:
     print("a 'support' group already exists")
+
+
+# Group Managment
+group = Group.objects.filter(name="managment")
+if not group.exists():
+    group_managment = Group.objects.create(name="managment")
+    group_managment.save()
+    print(
+        f"{color['success']} Group 'managment' successfully created."
+        f" {color['end']}"
+        )
+else:
+    print("a 'managment' group already exists")

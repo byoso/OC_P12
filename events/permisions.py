@@ -15,7 +15,10 @@ class EmployeeMixin():
         return groups
 
     def get_assignee(self, obj):
-        assignee = obj.assignment.employee
+        try:
+            assignee = obj.assignment.employee
+        except AttributeError:
+            assignee = None
         print("=== object's assignee: ", assignee)  # debug
         return assignee
 
