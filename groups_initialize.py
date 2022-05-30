@@ -6,6 +6,9 @@ from tools import color
 do it only once :
 $ ./manage.py shell < groups_initialize.py
 
+Here some permissions are given, they are NOT effective in the API,
+it is only for the use of the admin interface.
+
 """
 
 # Group Sale
@@ -58,6 +61,26 @@ else:
 group = Group.objects.filter(name="managment")
 if not group.exists():
     group_managment = Group.objects.create(name="managment")
+    permissions = [
+        # Same permissions as 'sale' group
+        Permission.objects.get(codename="add_client"),
+        Permission.objects.get(codename="change_client"),
+        Permission.objects.get(codename="view_client"),
+        Permission.objects.get(codename="add_contract"),
+        Permission.objects.get(codename="change_contract"),
+        Permission.objects.get(codename="view_contract"),
+        Permission.objects.get(codename="add_event"),
+
+        # Same permissions as 'support' group
+        Permission.objects.get(codename="view_client"),
+        Permission.objects.get(codename="change_event"),
+        Permission.objects.get(codename="view_event"),
+
+        # CRU pemrissions on Employee (TODO)
+    ]
+
+    for permission in permissions:
+        group_managment.permissions.add(permission)
     group_managment.save()
     print(
         f"{color['success']} Group 'managment' successfully created."

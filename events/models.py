@@ -46,13 +46,13 @@ class EmployeeClient(Assignment):
 
 
 class EmployeeContract(Assignment):
-    client = models.OneToOneField(
+    contract = models.OneToOneField(
         'events.Contract', on_delete=models.CASCADE, null=True, blank=True,
         related_name="assignment")
 
 
 class EmployeeEvent(Assignment):
-    client = models.OneToOneField(
+    event = models.ForeignKey(
         'events.Event', on_delete=models.CASCADE, null=True, blank=True,
         related_name="assignment")
 
@@ -98,12 +98,3 @@ class Event(TimeStamp):
 
     def __str__(self):
         return f"{self.name}"
-
-
-# content_type = ContentType.objects.get_for_model(Client)
-# # help(Permission.objects.create)
-# test_perm = Permission.objects.create(
-#     codename="test_perm",
-#     name="permission pour tester",
-#     content_type=content_type,
-# )
