@@ -40,13 +40,13 @@ class TimeStamp(models.Model):
 
 
 class EmployeeClient(Assignment):
-    client = models.OneToOneField(
+    client = models.ForeignKey(
         'events.Client', on_delete=models.CASCADE, null=True, blank=True,
         related_name="assignment")
 
 
 class EmployeeContract(Assignment):
-    contract = models.OneToOneField(
+    contract = models.ForeignKey(
         'events.Contract', on_delete=models.CASCADE, null=True, blank=True,
         related_name="assignment")
 
