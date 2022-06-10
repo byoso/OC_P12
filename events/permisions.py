@@ -14,7 +14,6 @@ class EmployeeMixin():
     def get_assignee(self, obj, filter_kwarg):
         self.employees = obj.assignment.filter(
             **filter_kwarg).filter(date_revoked=None)
-
         if len(self.employees) > 0:
             assignee = self.employees[len(self.employees)-1].employee
         else:
