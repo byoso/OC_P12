@@ -2,13 +2,13 @@ from django.contrib.auth.models import Group, Permission
 
 from tools import color
 
-"""Use this script to create the groups in a new database,
-do it only once :
+"""
+Use this script to create the groups in a new database,
+do it only once:
 $ ./manage.py shell < groups_initialize.py
 
 Here some permissions are given, they are NOT effective in the API,
 it is only for the use of the admin interface.
-
 """
 
 # Group Sale

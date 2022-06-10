@@ -5,10 +5,9 @@ from rest_framework.views import APIView
 from rest_framework import filters
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import (
-    IsAuthenticated,
-    )
+from rest_framework.permissions import IsAuthenticated
 from .serializers import EmployeeSerializer, EmployeeReadonlySerializer
+from .permissions import EmployeePermission
 from django.contrib.auth import get_user_model
 
 from events.models import (
@@ -24,6 +23,13 @@ from events.models import (
 Employee = get_user_model()
 
 
+# helper
+def employee_groups(employee):
+    """Returns a list of the employee's groups"""
+    groups = [group.name for group in employee.groups.all()]
+    return groups
+
+
 class EmployeeViewSet(ModelViewSet):
     serializer_class = EmployeeSerializer
     read_only_serializer_class = EmployeeReadonlySerializer
@@ -34,7 +40,7 @@ class EmployeeViewSet(ModelViewSet):
         return Employee.objects.all()
 
     def get_permissions(self):
-        permission_classes = [IsAuthenticated]
+        permission_classes = [IsAuthenticated, EmployeePermission]
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):
@@ -45,8 +51,9 @@ class EmployeeViewSet(ModelViewSet):
 
 class AssigneEvent(APIView):
 
+    permission_classes = [IsAuthenticated, EmployeePermission]
+
     def put(self, request, event_id, employee_id):
-        # print(f"=== event: {event_id} employee: {employee_id} ")  # debug
         event = get_object_or_404(Event, id=event_id)
         if EmployeeEvent.objects.filter(
                 date_revoked=None).filter(event=event_id).exists():
@@ -57,6 +64,11 @@ class AssigneEvent(APIView):
 
         if employee_id != 0:
             employee = get_object_or_404(Employee, id=employee_id)
+            if 'support' not in employee_groups(employee):
+                return Response(
+                    f"Refused: employee {employee.username}(id {employee.id})"
+                    " must be a member of the 'support' team."
+                    )
             assignment = EmployeeEvent.objects.create(event=event)
             assignment.employee = employee
             assignment.save()
@@ -70,6 +82,8 @@ class AssigneEvent(APIView):
 
 class AssigneContract(APIView):
 
+    permission_classes = [IsAuthenticated, EmployeePermission]
+
     def put(self, request, contract_id, employee_id):
         contract = get_object_or_404(Contract, id=contract_id)
         if EmployeeContract.objects.filter(
@@ -81,6 +95,11 @@ class AssigneContract(APIView):
 
         if employee_id != 0:
             employee = get_object_or_404(Employee, id=employee_id)
+            if 'sale' not in employee_groups(employee):
+                return Response(
+                    f"Refused: employee {employee.username}(id {employee.id})"
+                    " must be a member of the 'sale' team."
+                    )
             assignment = EmployeeContract.objects.create(contract=contract)
             assignment.employee = employee
             assignment.save()
@@ -95,6 +114,8 @@ class AssigneContract(APIView):
 
 class AssigneClient(APIView):
 
+    permission_classes = [IsAuthenticated, EmployeePermission]
+
     def put(self, request, client_id, employee_id):
         client = get_object_or_404(Client, id=client_id)
         if EmployeeClient.objects.filter(
@@ -106,6 +127,11 @@ class AssigneClient(APIView):
 
         if employee_id != 0:
             employee = get_object_or_404(Employee, id=employee_id)
+            if 'sale' not in employee_groups(employee):
+                return Response(
+                    f"Refused: employee {employee.username}(id {employee.id})"
+                    " must be a member of the 'sale' team."
+                    )
             assignment = EmployeeClient.objects.create(client=client)
             assignment.employee = employee
             assignment.save()

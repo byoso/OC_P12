@@ -19,16 +19,19 @@ Employee = get_user_model()
 class InlineClientAssignment(admin.TabularInline):
     model = EmployeeClient
     list_display = ['username']
+    extra = 1
 
 
 class InlineContractAssignment(admin.TabularInline):
     model = EmployeeContract
     list_display = ['username']
+    extra = 1
 
 
 class InlineEventAssignment(admin.TabularInline):
     model = EmployeeEvent
     list_display = ['username']
+    extra = 1
 
 
 class AdminEvent(admin.ModelAdmin):
@@ -38,7 +41,7 @@ class AdminEvent(admin.ModelAdmin):
         self.extra_context = {}
 
     model = Event
-    list_display = ['id', 'name', 'show_contract']
+    list_display = ['name', 'id', 'show_contract']
     inlines = [InlineEventAssignment]
 
     def _get_link(self, obj):
@@ -61,7 +64,7 @@ class InlineEvent(admin.StackedInline):
 
 class AdminContract(admin.ModelAdmin):
     model = Contract
-    list_display = ['id', 'client', 'date_created', 'signed', 'payed']
+    list_display = ['client', 'id', 'date_created', 'signed', 'payed']
     list_filter = ['signed', 'payed']
     search_fields = [
         'client__last_name', 'client__company_name',
@@ -81,7 +84,7 @@ class InlineContract(admin.StackedInline):
 class AdminClient(admin.ModelAdmin):
     model = Client
     list_display = [
-        "id", "first_name", "last_name", "phone", "mobile",
+        "first_name", "last_name", "id", "phone", "mobile",
         "is_client",
         # "assigned"
         ]
