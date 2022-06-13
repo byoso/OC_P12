@@ -6,6 +6,7 @@ from .api_views import (
     AssigneEvent,
     AssigneContract,
     AssigneClient,
+    EmployeeToGroup,
 )
 
 router.register('employee', EmployeeViewSet, basename='employee')
@@ -21,4 +22,8 @@ urlpatterns = [
     path(
         "managment/assigne_client/<int:client_id>/to/<int:employee_id>",
         AssigneClient.as_view(), name="assigne_client"),
+    path(
+        "managment/employee/<int:employee_id>/to_group/<str:group_name>",
+        EmployeeToGroup.as_view(), name="employee_to_group"
+    )
 ]

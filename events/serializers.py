@@ -9,7 +9,7 @@ from .models import (
 )
 
 
-#helper
+# helper
 def assignee_helper(obj, filter_kwarg):
     """returns the obj's assignee or None"""
     employees = obj.assignment.filter(
@@ -17,6 +17,7 @@ def assignee_helper(obj, filter_kwarg):
     if len(employees) > 0:
         return employees[len(employees)-1].employee
     return
+
 
 # Modified ModelSerializer
 class InclusiveSerializer(ModelSerializer):
@@ -39,7 +40,6 @@ class InclusiveSerializer(ModelSerializer):
 
 
 class ClientSerializer(InclusiveSerializer):
-
     class Meta:
         model = Client
         fields = '__all__'

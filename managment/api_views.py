@@ -4,8 +4,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework import filters
 from rest_framework.response import Response
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import Group
+
 from .serializers import EmployeeSerializer, EmployeeReadonlySerializer
 from .permissions import EmployeePermission
 from django.contrib.auth import get_user_model
@@ -142,3 +145,20 @@ class AssigneClient(APIView):
             return Response(
                 f"Client '{client.last_name}'({client_id}) "
                 "is not assigned anymore.")
+
+
+class EmployeeToGroup(APIView):
+    permission_classes = [IsAuthenticated, EmployeePermission]
+
+    def put(self, request, employee_id, group_name):
+        employee = get_object_or_404(Employee, id=employee_id)
+        groups = {group.name: group.id for group in Group.objects.all()}
+        if group_name not in groups:
+            raise Http404('Undefined group.')
+        employee.groups.clear()
+        group = get_object_or_404(Group, id=groups[group_name])
+        group.user_set.add(employee)
+
+        return Response(
+            f"Employee {employee.username}"
+            f"(id:{employee.id}) is now in the group '{group.name}'")
