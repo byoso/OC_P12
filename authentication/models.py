@@ -9,3 +9,9 @@ class Employee(AbstractUser):
 
     class Meta:
         verbose_name = "Employee"
+
+    @property
+    def get_groups(self):
+        return [group.name for group in self.groups.all()]
+    # set a verbose name for django admin:
+    get_groups.fget.short_description = 'groups'

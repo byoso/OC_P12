@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
@@ -34,10 +35,20 @@ class NoClientDeleteMixin(DestroyModelMixin):
             f"Name:{former_name}' is now Anonymous and inactive."
             )
 
+    @transaction.atomic
     def perform_destroy(self, instance):
         instance.last_name = "Anonymous"
         instance.active = False
         instance.save()
+        contracts = "contracts"
+        contracts = Contract.objects.filter(client=instance)
+        for contract in contracts:
+            contract.active = False
+            contract.save()
+            events = Event.objects.filter(contract=contract)
+            for event in events:
+                event.active = False
+                event.save()
 
 
 class ClientViewSet(NoClientDeleteMixin, ModelViewSet):

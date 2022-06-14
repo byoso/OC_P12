@@ -28,6 +28,7 @@ class Assignment(models.Model):
 
 class TimeStamp(models.Model):
     """Abstract Model"""
+    active = models.BooleanField(default=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     comment = models.TextField(max_length=255, null=True, blank=True)
@@ -58,7 +59,6 @@ class EmployeeEvent(Assignment):
 
 
 class Client(TimeStamp):
-    active = models.BooleanField(default=True)
     is_client = models.BooleanField(default=False, verbose_name="is client")
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

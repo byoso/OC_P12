@@ -41,7 +41,8 @@ class AdminEvent(admin.ModelAdmin):
         self.extra_context = {}
 
     model = Event
-    list_display = ['name', 'id', 'show_contract']
+    list_display = ['name', 'id', 'show_contract', 'active']
+    list_filter = ['active']
     inlines = [InlineEventAssignment]
 
     def _get_link(self, obj):
@@ -64,8 +65,10 @@ class InlineEvent(admin.StackedInline):
 
 class AdminContract(admin.ModelAdmin):
     model = Contract
-    list_display = ['client', 'id', 'date_created', 'signed', 'payed']
-    list_filter = ['signed', 'payed']
+    list_display = [
+        'client', 'id', 'date_created', 'signed', 'payed', 'active'
+        ]
+    list_filter = ['signed', 'payed', 'active']
     search_fields = [
         'client__last_name', 'client__company_name',
         'date_created']
