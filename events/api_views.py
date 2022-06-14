@@ -1,9 +1,10 @@
-
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import filters
 from rest_framework.permissions import (
     IsAuthenticated,
     )
+from rest_framework.mixins import DestroyModelMixin
 
 from .models import (
     Client,
@@ -22,7 +23,24 @@ from .permisions import (
 )
 
 
-class ClientViewSet(ModelViewSet):
+class NoClientDeleteMixin(DestroyModelMixin):
+    """Anonymize a client instead of deleting it"""
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        former_name = instance.last_name
+        self.perform_destroy(instance)
+        return Response(
+            f"client 'id:{instance.id}, "
+            f"Name:{former_name}' is now Anonymous and inactive."
+            )
+
+    def perform_destroy(self, instance):
+        instance.last_name = "Anonymous"
+        instance.active = False
+        instance.save()
+
+
+class ClientViewSet(NoClientDeleteMixin, ModelViewSet):
     serializer_class = ClientSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['email', 'last_name']

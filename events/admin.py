@@ -85,9 +85,7 @@ class AdminClient(admin.ModelAdmin):
     model = Client
     list_display = [
         "first_name", "last_name", "id", "phone", "mobile",
-        "is_client",
-        # "assigned"
-        ]
+        "is_client", "active"]
     search_fields = ["first_name", "last_name"]
     list_filter = ["active", "is_client"]
     inlines = [InlineClientAssignment, InlineContract]

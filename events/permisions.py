@@ -29,7 +29,9 @@ class ClientPermission(EmployeeMixin, BasePermission):
         if view.action == 'retrieve':
             return True
         if 'sale' in self.user_groups(request):
-            if view.action in ['create', 'update', 'partial_update']:
+            if view.action in [
+                'create', 'update', 'partial_update', 'destroy'
+                    ]:
                 return True
         return False
 
@@ -38,8 +40,9 @@ class ClientPermission(EmployeeMixin, BasePermission):
         if assignee is None:
             return False
         if 'sale' in self.user_groups(request):
-            if view.action in ['retrieve', 'update', 'partial_update'] and \
-                    request.user == assignee:
+            if view.action in [
+                'retrieve', 'update', 'partial_update', 'destroy'
+                    ] and request.user == assignee:
                 return True
         return False
 
