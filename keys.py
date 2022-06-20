@@ -11,7 +11,7 @@ to modify once the application is already deployed in production.
 
 # Debug
 DEBUG = True
-DATABASE_DEBUG = True  # True for sqlite, False for PostgreSQL
+DATABASE_DEBUG = False  # True for sqlite, False for PostgreSQL
 # set a prefix to 'hide' the site on production while operating with the
 # test database.
 DEBUG_DB_PREFIX = ""

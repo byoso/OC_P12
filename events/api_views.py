@@ -25,7 +25,8 @@ from .permisions import (
 
 
 class NoClientDeleteMixin(DestroyModelMixin):
-    """Anonymize a client instead of deleting it"""
+    """Anonymize a client instead of deleting it,
+    also set inactive his contracts and events"""
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         former_name = instance.last_name
