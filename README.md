@@ -1,5 +1,10 @@
 ![Epic Events logo](https://user.oc-static.com/upload/2020/09/22/16007804386673_P10.png)
 
+
+# Epic Events
+
+_API CRM destined to manage the activity of Epic Events (Clients, Contracts, Events)_
+
 # Installation
 
 ### Epic Events uses posrgresql
